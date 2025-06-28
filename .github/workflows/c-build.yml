@@ -1,0 +1,27 @@
+# Nama Workflow
+name: C/C++ CI
+
+# Kapan workflow ini berjalan?
+on:
+  # Setiap kali ada 'push' ke branch 'main'
+  push:
+    branches: [ "main" ]
+  # Setiap kali ada Pull Request ke branch 'main'
+  pull_request:
+    branches: [ "main" ]
+
+# Pekerjaan yang harus dilakukan
+jobs:
+  build:
+    # Menggunakan OS apa untuk menjalankan pekerjaan
+    runs-on: ubuntu-latest
+
+    steps:
+    # Langkah 1: Checkout kode dari repositori
+    - uses: actions/checkout@v3
+
+    # Langkah 2: Mencoba compile semua file .c di semua folder
+    # 'find . -name "*.c"' -> cari semua file yang berakhiran .c
+    # 'xargs -I {} gcc {} -o /dev/null' -> untuk setiap file, jalankan gcc
+    - name: Compile all C files
+      run: find . -name "*.c" -print0 | xargs -0 -I {} gcc {} -o /dev/null
